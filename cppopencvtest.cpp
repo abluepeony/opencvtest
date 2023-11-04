@@ -1,4 +1,5 @@
 #include </home/tester/opencv-4.x/include/opencv2/opencv.hpp>
+#include </home/tester/build/opencv2/opencv_modules.hpp
 #include <opencv2/cudaimgproc.hpp>
 #include </home/tester/opencv_contrib-4.x/modules/cudaarithm/include/opencv2/cudaarithm.hpp>
 
