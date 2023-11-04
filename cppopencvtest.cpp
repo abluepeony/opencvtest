@@ -1,21 +1,39 @@
 #include <opencv2/opencv.hpp>
+#include <opencv2/cudaimgproc.hpp>
+#include <opencv2/cudaarithm.hpp>
 
 int main() {
-    // Create a window
-    cv::namedWindow("OpenCV Test", cv::WINDOW_NORMAL);
+    // Load two images
+    cv::Mat background = cv::imread("background.jpg");
+    cv::Mat overlay = cv::imread("overlay.png", cv::IMREAD_UNCHANGED);
 
-    // Create an image to display the "Hi" message
-    cv::Mat image = cv::Mat::zeros(100, 300, CV_8UC3); // 100x300 pixel black image
+    if (background.empty() || overlay.empty()) {
+        std::cerr << "Error: Unable to load one or both images." << std::endl;
+        return 1;
+    }
 
-    // Display the "Hi" message on the image
-    cv::putText(image, "Hi", cv::Point(50, 50), cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(255, 255, 255), 2);
+    // Transfer images to GPU memory
+    cv::cuda::GpuMat gpuBackground(background);
+    cv::cuda::GpuMat gpuOverlay(overlay);
 
-    // Display the image in the window
-    cv::imshow("OpenCV Test", image);
+    // Create a GPU Mat for the output image
+    cv::cuda::GpuMat gpuResult;
 
-    // Wait for a key press and then close the window
+    // Define the position to overlay the image (x, y coordinates)
+    int posX = 100;
+    int posY = 50;
+
+    // Perform GPU-based image overlay
+    cv::cuda::GpuMat roi(gpuResult, cv::Rect(posX, posY, overlay.cols, overlay.rows));
+    gpuOverlay.copyTo(roi, gpuOverlay);
+
+    // Transfer the result back to CPU memory
+    cv::Mat result;
+    gpuResult.download(result);
+
+    // Display the combined image
+    cv::imshow("Overlay Image", result);
     cv::waitKey(0);
-    cv::destroyAllWindows();
 
     return 0;
 }
