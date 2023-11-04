@@ -1,4 +1,4 @@
-#include </opencv2/opencv.hpp>
+#include </usr/include/opencv4/opencv2/opencv.hpp>
 #include </opencv2/cudaimgproc.hpp>
 #include </opencv2/cudaarithm.hpp>
 
