@@ -1,6 +1,6 @@
-#include <opencv2/opencv.hpp>
-#include <opencv2/cudaimgproc.hpp>
-#include <opencv2/cudaarithm.hpp>
+#include </opencv2/opencv.hpp>
+#include </opencv2/cudaimgproc.hpp>
+#include </opencv2/cudaarithm.hpp>
 
 int main() {
     // Load two images
